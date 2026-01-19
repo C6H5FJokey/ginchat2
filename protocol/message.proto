@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package protocol;
+
+option go_package = "./protocol";
+message Message {
+  string avatar        = 1;
+  string from_username = 2;
+  int64  from          = 3;
+  int64  to            = 4;
+  string content       = 5;
+  int32  content_type  = 6;
+  string type          = 7;
+  int32  message_type  = 8;
+  string url           = 9;
+  string file_suffix   = 10;
+  bytes  file          = 11;
+  int64  persona       = 12;
+}

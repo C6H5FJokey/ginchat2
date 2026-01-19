@@ -1,0 +1,28 @@
+Name: ginchat2-api
+Host: 0.0.0.0
+Port: 8888
+
+Log:
+  Mode: console
+  Encoding: plain
+  Level: debug
+
+Auth:
+  AccessSecret: ginchat2
+  AccessExpire: 54000
+
+Database:
+  DataSource: host=localhost user=gorm password=gorm dbname=ginchat2 port=5432 sslmode=disable TimeZone=Asia/Shanghai
+
+Cache:
+  - Host: localhost:6379
+
+MsgChannel:
+  ChannelType: gochannel
+  KafkaHosts: localhost:9092
+  KafkaTopic: ginchat2
+
+OpenAI:
+  BaseURL: https://api.deepseek.com
+  Model: deepseek-chat
+  Token:

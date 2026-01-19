@@ -1,0 +1,206 @@
+syntax = "v1"
+
+type LoginReq {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type LoginResp {
+	Token string `json:"token"`
+}
+
+type RegisterReq {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+}
+
+type GetUserInfoReq {
+	Id int64 `json:"id"`
+}
+
+type GetUserInfoResp {
+	Id       int64  `json:"id"`
+	Username string `json:"username"`
+}
+
+type AddPersonaReq {
+	Name   string `json:"name"`
+	Prompt string `json:"prompt"`
+}
+
+type EditPersonaReq {
+	Id     int64  `json:"id"`
+	Name   string `json:"name"`
+	Prompt string `json:"prompt"`
+}
+
+type GetPersonaReq {
+	Name string `json:"name"`
+}
+
+type GetPersonaResp {
+	Id     int64  `json:"id"`
+	Name   string `json:"name"`
+	Prompt string `json:"prompt"`
+}
+
+type DelPersonaReq {
+	Id int64 `json:"id"`
+}
+
+type CreateGroupReq {
+	Name string `json:"name"`
+}
+
+type JoinGroupReq {
+	Id int64 `json:"id"`
+}
+
+type LeaveGroupReq {
+	Id int64 `json:"id"`
+}
+
+type GetGroupMembersReq {
+	Id int64 `json:"id"`
+}
+
+type GetGroupMembersResp {
+	Id   int64  `json:"id"`
+	Name string `json:"name"`
+}
+
+type WsReq {
+	Token string `form:"token"`
+}
+
+@server (
+	prefix: /v1
+)
+service ginchat2-api {
+	@handler login
+	post /user/login (LoginReq) returns (LoginResp)
+
+	@handler register
+	post /user/register (RegisterReq)
+
+	@handler info
+	get /user/info (GetUserInfoReq) returns (GetUserInfoResp)
+}
+
+@server (
+	prefix: /v1
+	jwt:    Auth
+	group:  persona
+)
+service ginchat2-api {
+	@handler addPersona
+	post /persona/add (AddPersonaReq)
+
+	@handler editPersona
+	post /persona/edit (EditPersonaReq)
+
+	@handler getAllPersona
+	get /persona/all returns ([]GetPersonaResp)
+
+	@handler getPersona
+	get /persona/get (GetPersonaReq) returns (GetPersonaResp)
+
+	@handler delPersona
+	post /persona/del (DelPersonaReq)
+}
+
+@server (
+	prefix: /v1
+	jwt:    Auth
+	group:  group
+)
+service ginchat2-api {
+	@handler createGroup
+	post /group/create (CreateGroupReq)
+
+	@handler joinGroup
+	post /group/join (JoinGroupReq)
+
+	@handler leaveGroup
+	post /group/leave (LeaveGroupReq)
+
+	@handler getGroupMembers
+	get /group/members (GetGroupMembersReq) returns ([]GetGroupMembersResp)
+}
+
+type GetStateResp {
+	Id         int64  `json:"id"`
+	Name       string `json:"name"`
+	Prompt     string `json:"prompt"`
+	AssignedBy int64  `json:"assigned_by"`
+}
+
+type GetUserStateResp {
+	Id     int64  `json:"id"`
+	UserId int64  `json:"user_id"`
+	Name   string `json:"name"`
+}
+
+type CreateStateReq {
+	GroupId int64  `json:"group_id"`
+	Name    string `json:"name"`
+	Prompt  string `json:"prompt"`
+}
+
+type AppendStateReq {
+	GroupId int64 `json:"group_id"`
+	UserId  int64 `json:"user_id"`
+	StateId int64 `json:"state_id"`
+}
+
+type RemoveStateReq {
+	GroupId int64 `json:"group_id"`
+	UserId  int64 `json:"user_id"`
+	StateId int64 `json:"state_id"`
+}
+
+type GetStateFromUser {
+	GroupId int64
+}
+
+type GetStateByGroupReq {
+	GroupId int64 `json:"group_id"`
+}
+
+type GetUserStateByGroupReq {
+	GroupId int64 `json:"group_id"`
+	UserId  int64 `json:"user_id"`
+}
+
+@server (
+	prefix: /v1
+	jwt:    Auth
+	group:  state
+)
+service ginchat2-api {
+	@handler createState
+	post /state/create (CreateStateReq)
+
+	@handler appendState
+	post /state/append (AppendStateReq)
+
+	@handler removeState
+	post /state/remove (RemoveStateReq)
+
+	@handler getStateByGroup
+	get /state/group (GetStateByGroupReq) returns ([]GetStateResp)
+
+	@handler getAllStateByGroup
+	get /state/group/all (GetStateByGroupReq) returns ([]GetUserStateResp)
+
+	@handler getUserStateByGroup
+	get /state/group/user (GetUserStateByGroupReq) returns ([]GetStateResp)
+}
+
+service ginchat2-api {
+	@handler ws
+	get /ws (WsReq)
+}
+

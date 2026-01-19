@@ -1,0 +1,61 @@
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Binaries / build outputs
+bin/
+dist/
+build/
+out/
+target/
+*.a
+
+# Go workspace (Go 1.18+)
+go.work
+go.work.sum
+
+# Vendor (uncomment if you vendor deps)
+# vendor/
+
+# Coverage / profiling
+*.cover
+*.cov
+coverage*
+*.prof
+*.pprof
+
+# Logs / temp
+*.log
+tmp/
+temp/
+*.tmp
+
+# IDE / Editor
+.vscode/
+.idea/
+*.iml
+*.swp
+*.swo
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Env / secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Go module cache (usually outside repo, but ignore if present)
+pkg/
+
+# Local config
+config.local.*
+
+ginchat2-api-dev.yaml
