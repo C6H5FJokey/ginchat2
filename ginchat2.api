@@ -92,6 +92,15 @@ service ginchat2-api {
 @server (
 	prefix: /v1
 	jwt:    Auth
+)
+service ginchat2-api {
+	@handler me
+	get /user/me returns (GetUserInfoResp)
+}
+
+@server (
+	prefix: /v1
+	jwt:    Auth
 	group:  persona
 )
 service ginchat2-api {
